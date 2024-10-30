@@ -18,7 +18,7 @@ You should be able to see something similar like this in the console, indicantin
 ---
 ![image](https://github.com/user-attachments/assets/032d9ce1-cba8-4c84-92ce-81a7b23939e0)
 
-I added a function to simulate connections and disconnections (not working yet) to the server.
+I added a function to simulate connections and disconnections to the server.
 The logic for the connections runs alongside with the server thanks to the gorutines and I set a time of 10 seconds to wait the response from the server in case the server takes more than that to start or return a response.
 
 ![image](https://github.com/user-attachments/assets/dfe4af91-98ce-4632-ba7a-54c2398b59f2)
