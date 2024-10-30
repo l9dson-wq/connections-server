@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
-    "log"
+    _ "log"
 )
 
 type Server struct {
@@ -17,15 +17,13 @@ func (s *Server) Broadcast(message string) {
 }
 
 func (s *Server) ConnectPlayer (w http.ResponseWriter, r *http.Request) {
-    log.Printf("**Calling ConnectPlayer function**")
-
     playerID := r.URL.Query().Get("id")
     if playerID == "" {
         http.Error(w, "The 'id' parameter is missing", http.StatusBadRequest)
         return
     }
 
-    // lock the thread so we do not allow another uses.
+    // lock the thread
     s.mutex.Lock()
     // unlock the thread
     defer s.mutex.Unlock()
@@ -38,4 +36,23 @@ func (s *Server) ConnectPlayer (w http.ResponseWriter, r *http.Request) {
 
     w.WriteHeader(http.StatusOK)
     w.Write([]byte(fmt.Sprintf("Player %s connected\n", playerID)))
+}
+
+func (s *Server) DisconnectPlayer (w http.ResponseWriter, r *http.Request) {
+    playerID := r.URL.Query().Get("id")
+    if playerID == "" {
+        http.Error(w, "The 'id' parameter is missing", http.StatusBadRequest)
+        return
+    }
+
+    s.mutex.Lock()
+    defer s.mutex.Unlock()
+
+    if s.players[playerID]{
+        delete(s.players, playerID)
+        s.Broadcast(fmt.Sprintf("Player %s has leave the session.\n", playerID))
+    }
+
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(fmt.Sprintf("Player %s disconnected", playerID)))
 }
