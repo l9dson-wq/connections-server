@@ -11,6 +11,9 @@ func SimulateConnections(ids []string, url string) {
     //fmt.Println("SimulateConnections is being called")
     var wg sync.WaitGroup
 
+    // Endpoint for the disconnecrtion
+    DISCONNECTENDPOINT := "http://localhost:8090/disconnect"
+
     // setting a response time for the server
     client := &http.Client{
         Timeout: 10 * time.Second,
@@ -38,7 +41,17 @@ func SimulateConnections(ids []string, url string) {
             fmt.Printf("Response for the ID %s: %v\n", id, resp.StatusCode) 
 
             // Simulate disconnections of Each user after a period of time
-            time.Sleep(40 * time.Second)
+            time.Sleep(10 * time.Second)
+
+            // make the request for the diconnection 
+            disResp, err := client.Get(DISCONNECTENDPOINT)
+            if err != nil {
+                fmt.Printf("Error sending the HTPP request in disconnection for the ID %s: %v\n", id, err)
+                return
+            }
+
+            fmt.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
+
             fmt.Println("User disconnected after the 40SEG")
         }(id)
     }
