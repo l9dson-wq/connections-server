@@ -44,15 +44,16 @@ func SimulateConnections(ids []string, url string) {
             time.Sleep(10 * time.Second)
 
             // make the request for the diconnection 
-            disResp, err := client.Get(DISCONNECTENDPOINT)
+            disRes, err := client.Get(DISCONNECTENDPOINT)
             if err != nil {
                 fmt.Printf("Error sending the HTPP request in disconnection for the ID %s: %v\n", id, err)
                 return
             }
 
-            fmt.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
+            //fmt.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
 
-            fmt.Println("User disconnected after the 40SEG")
+            //fmt.Println("User disconnected after the 40SEG")
+            fmt.Printf("%v", disRes)
         }(id)
     }
 
