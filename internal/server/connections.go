@@ -39,7 +39,7 @@ func SimulateConnections(ids []string, url string) {
             // make the request to the server
             resp, err := client.Get(requestURL)
             if err != nil {
-                log.Printf("Error sending the HTPP request for the ID %s: %v\n", id, err)
+                log.Printf("Error sending the HTTP request for the ID %s: %v\n", id, err)
                 return
             }
             defer resp.Body.Close()
@@ -60,7 +60,7 @@ func SimulateConnections(ids []string, url string) {
             }
 
             log.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
-            log.Println("User disconnected after the 40SEG")
+            log.Printf("User %s disconnected after the 40SEG", id)
         }(id)
     }
 
