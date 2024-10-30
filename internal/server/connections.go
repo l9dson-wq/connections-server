@@ -2,15 +2,21 @@ package server
 
 import (
 	"fmt"
-    _"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
-func SimulateConnecionts(ids []string, url string) {
+func SimulateConnections(ids []string, url string) {
+    //fmt.Println("SimulateConnections is being called")
     var wg sync.WaitGroup
 
-    // send the requests using a for loop (probably this can be improve)
+    // setting a response time for the server
+    client := &http.Client{
+        Timeout: 10 * time.Second,
+    }
+
+    // send the requests using a for loop
     for _, id := range ids {
         wg.Add(1)
 
@@ -18,11 +24,11 @@ func SimulateConnecionts(ids []string, url string) {
         go func(id string) {
             defer wg.Done()
 
-            // My server URL which for now is a localhost
-            requestURL := fmt.Sprintf("%s%s", url, id)
+            // The server URL 
+            requestURL := fmt.Sprintf("%s?id=%s", url, id)
 
             // make the request to the server
-            resp, err := http.Get(requestURL)
+            resp, err := client.Get(requestURL)
             if err != nil {
                 fmt.Printf("Error sending the HTPP request for the ID %s: %v\n", id, err)
                 return
