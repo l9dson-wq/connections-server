@@ -5,16 +5,21 @@ import (
 	"net/http"
 	"sync"
 	"time"
+    "log"
 )
 
 func SimulateConnections(ids []string, url string) {
     //fmt.Println("SimulateConnections is being called")
     var wg sync.WaitGroup
 
-    // Endpoint for the disconnecrtion
+    // Endpoint for the Disconnections
     DISCONNECTENDPOINT := "http://localhost:8090/disconnect"
 
-    // setting a response time for the server
+    /* 
+    setting a response time for the server
+    meaning this will be used as the time expected
+    to get the response from the server
+    */
     client := &http.Client{
         Timeout: 10 * time.Second,
     }
@@ -27,33 +32,35 @@ func SimulateConnections(ids []string, url string) {
         go func(id string) {
             defer wg.Done()
 
-            // The server URL 
+            // The server URL and the url parameter
             requestURL := fmt.Sprintf("%s?id=%s", url, id)
+            requestURLForDisconnection := fmt.Sprintf("%s?id=%s", DISCONNECTENDPOINT, id)
 
             // make the request to the server
             resp, err := client.Get(requestURL)
             if err != nil {
-                fmt.Printf("Error sending the HTPP request for the ID %s: %v\n", id, err)
+                log.Printf("Error sending the HTPP request for the ID %s: %v\n", id, err)
                 return
             }
             defer resp.Body.Close()
 
-            fmt.Printf("Response for the ID %s: %v\n", id, resp.StatusCode) 
+            log.Printf("Response for the ID %s: %v\n", id, resp.StatusCode) 
 
             // Simulate disconnections of Each user after a period of time
             time.Sleep(10 * time.Second)
 
-            // make the request for the diconnection 
-            disRes, err := client.Get(DISCONNECTENDPOINT)
+            /*
+            The disconnection will be executed after the period of time above 
+            of this line.
+            */
+            disResp, err := client.Get(requestURLForDisconnection)
             if err != nil {
-                fmt.Printf("Error sending the HTPP request in disconnection for the ID %s: %v\n", id, err)
+                log.Printf("Error sending the HTPP request in disconnection for the ID %s: %v\n", id, err)
                 return
             }
 
-            //fmt.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
-
-            //fmt.Println("User disconnected after the 40SEG")
-            fmt.Printf("%v", disRes)
+            log.Printf("Response after disconnection for the ID %s: %v\n", id, disResp.StatusCode) 
+            log.Println("User disconnected after the 40SEG")
         }(id)
     }
 

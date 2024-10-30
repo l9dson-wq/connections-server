@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
-    _ "log"
+    _"log"
 )
 
 type Server struct {
