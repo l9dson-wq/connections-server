@@ -35,7 +35,11 @@ func SimulateConnections(ids []string, url string) {
             }
             defer resp.Body.Close()
 
-            fmt.Printf("Response for the ID %s: %v\n", id, resp.StatusCode)
+            fmt.Printf("Response for the ID %s: %v\n", id, resp.StatusCode) 
+
+            // Simulate disconnections of Each user after a period of time
+            time.Sleep(40 * time.Second)
+            fmt.Println("User disconnected after the 40SEG")
         }(id)
     }
 
