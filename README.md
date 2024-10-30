@@ -11,9 +11,11 @@ You must send the id in both of the endpoints, rember to change "[PLAYERID]" wit
 
 You should be able to see something similar like this in the console, indicanting a "Player has joined the session":
 * connect
+---
 ![image](https://github.com/user-attachments/assets/f2668a11-2447-40de-9c85-ef3d460db81b)
 
 * disconnect
+---
 ![image](https://github.com/user-attachments/assets/032d9ce1-cba8-4c84-92ce-81a7b23939e0)
 
 I added a function to simulate connection and disconnections (not working yet) to the server.
