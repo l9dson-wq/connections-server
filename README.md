@@ -1,4 +1,4 @@
-# Game server behavior simualtion
+# Connect and disconnection server
 A simulation of a connection and disconnection sever or something similar IDK, I just wanted to start practicing concurrency in go.
 
 The project run in a localhost for now.
